@@ -1,0 +1,26 @@
+includes:
+  - %currentWorkingDirectory%/vendor/phpstan/phpstan-phpunit/extension.neon
+  - %currentWorkingDirectory%/vendor/phpstan/phpstan-phpunit/rules.neon
+  - %currentWorkingDirectory%/vendor/phpstan/phpstan-doctrine/extension.neon
+  - %currentWorkingDirectory%/vendor/phpstan/phpstan-doctrine/rules.neon
+  - %currentWorkingDirectory%/vendor/phpstan/phpstan-symfony/extension.neon
+  - %currentWorkingDirectory%/vendor/phpstan/phpstan-symfony/rules.neon
+
+parameters:
+
+    level: 5
+
+    inferPrivatePropertyTypeFromConstructor: true
+
+    paths:
+        - %currentWorkingDirectory%/src/
+
+    autoload_files:
+        - %currentWorkingDirectory%/config/bootstrap.php
+
+    excludes_analyse:
+        - %currentWorkingDirectory%/src/Migrations/*.php
+        - %currentWorkingDirectory%/src/Kernel.php
+
+    symfony:
+        container_xml_path: %currentWorkingDirectory%/var/cache/dev/App_KernelDevDebugContainer.xml

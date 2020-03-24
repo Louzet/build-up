@@ -6,8 +6,10 @@ services:
     ports:
       - 8000:80
     volumes:
-      - .:/${WORKING_DIRECTORY}
-      - ./docker/nginx/build_up.conf:/etc/nginx/conf.d/default.conf
+      - .:${WORKING_DIRECTORY}
+      - ./docker/nginx/conf.d/build_up.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/logs/nginx/:/var/log/nginx:cached
     links:
       - php
     restart: on-failure
@@ -18,7 +20,8 @@ services:
       args:
         TIMEZONE: ${TIMEZONE}
     volumes:
-      - .:/${WORKING_DIRECTORY}
+      - .:${WORKING_DIRECTORY}
+      - ./docker/logs/php/:/var/log/build_up:cached
     links:
       - mysql
       - redis
@@ -26,8 +29,6 @@ services:
     depends_on:
       - mysql
     restart: on-failure
-    networks: 
-      - build_up_network
 
   mysql:
     image: mysql:5.7
