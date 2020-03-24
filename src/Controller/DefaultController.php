@@ -12,6 +12,7 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
+        echo $_SERVER['REMOTE_ADDR'];
         return $this->render('base.html.twig');
     }
 }
