@@ -1,2 +1,0 @@
-2020/03/24 14:23:40 [crit] 6#6: *1 realpath() "/var/www/public" failed (2: No such file or directory), client: 192.168.32.1, server: , request: "GET / HTTP/1.1", host: "localhost:8000"
-2020/03/24 14:23:40 [error] 6#6: *1 FastCGI sent in stderr: "Primary script unknown" while reading response header from upstream, client: 192.168.32.1, server: , request: "GET / HTTP/1.1", upstream: "fastcgi://192.168.32.4:9000", host: "localhost:8000"
