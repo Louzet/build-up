@@ -1,7 +1,6 @@
 FROM php:7.4-fpm
 
-WORKDIR "${WORKING_DIRECTORY}"
-
+WORKDIR /var/www
 
 ARG APCU_VERSION=5.1.18
 
