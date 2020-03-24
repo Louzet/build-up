@@ -2,6 +2,7 @@ FROM php:7.4-fpm
 
 WORKDIR "${WORKING_DIRECTORY}"
 
+
 ARG APCU_VERSION=5.1.18
 
 # Set timezone
