@@ -8,11 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/", name="default")
+     * @Route("/{reactRouting}", name="default", defaults={"reactRouting": null})
      */
     public function index()
     {
-        echo $_SERVER['REMOTE_ADDR'];
-        return $this->render('base.html.twig');
+        return $this->render('default/index.html.twig');
     }
 }
