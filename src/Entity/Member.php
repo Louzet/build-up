@@ -4,13 +4,25 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *  normalizationContext={"groups"={"members:output"}},
+ *  denormalizationContext={"groups"={"members:input"}},
+ *  attributes={
+ *      "order"={"lastname":"asc"}
+ *  }
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"firstname":"partial", "lastname":"partial", "email":"partial"})
  * @ORM\Entity(repositoryClass="App\Repository\MemberRepository")
+ * @UniqueEntity(fields={"email"}, message="Une membre existe déjà avec cet email.")
  */
 class Member implements UserInterface
 {
@@ -18,56 +30,81 @@ class Member implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"members:output"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"members:output", "members:input"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"members:output", "members:input"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"member:output", "members:input"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"members:output"})
      */
     private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank
+     * @Groups({"members:input"})
      */
     private $password;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
-     * @Assert\NotBlank
-     * @Assert\Date
+     * @ORM\Column(type="string", nullable=true)
+     * @Groups({"members:output", "members:input"})
      */
     private $birthdate;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
      * @Gedmo\Timestampable(on="create")
+     * @Groups({"members:output"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      * @Gedmo\Timestampable(on="update")
+     * @Groups({"members:output"})
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"members:output"})
+     */
+    private $enabled;
+
+    public function __construct(string $firstname, string $lastname, string $email, string $password, ?string $birthdate = null)
+    {
+        $this->firstname = $firstname;
+        $this->lastname = $lastname;
+        $this->email;
+        $this->password = $password;
+        $this->birthdate = $birthdate;
+        $this->roles = ['ROLE_USER'];
+        $this->createdAt = new \Datetime();
+        $this->enabled = false;
+    }
 
     public function getId(): ?int
     {
@@ -83,6 +120,8 @@ class Member implements UserInterface
     {
         $this->firstname = $firstname;
 
+        $this->setUpdatedAt();
+
         return $this;
     }
 
@@ -95,6 +134,8 @@ class Member implements UserInterface
     {
         $this->lastname = $lastname;
 
+        $this->setUpdatedAt();
+
         return $this;
     }
 
@@ -106,6 +147,8 @@ class Member implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -129,9 +172,11 @@ class Member implements UserInterface
         return $this->roles;
     }
 
-    public function setRoles(arrays $roles): self
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -153,6 +198,8 @@ class Member implements UserInterface
     {
         $this->password = $password;
 
+        $this->setUpdatedAt();
+
         return $this;
     }
 
@@ -168,12 +215,14 @@ class Member implements UserInterface
 
     public function getBirthdate(): ?\DateTimeInterface
     {
-        return $this->birthdate;
+        return new \DateTime($this->birthdate);
     }
 
-    public function setBirthdate(?\DateTimeInterface $birthdate): self
+    public function setBirthdate(string $birthdate): self
     {
         $this->birthdate = $birthdate;
+
+        $this->setUpdatedAt();
 
         return $this;
     }
@@ -195,9 +244,21 @@ class Member implements UserInterface
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DatetimeInterface $updatedAt): self
+    public function setUpdatedAt()
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = new \DateTime();
+    }
+
+    public function getEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        $this->setUpdatedAt();
 
         return $this;
     }
