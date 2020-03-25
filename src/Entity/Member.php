@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ApiResource(
@@ -62,9 +63,15 @@ class Member implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @SerializedName("password")
      * @Groups({"members:input"})
+     * @Assert\NotBlank()
+     */
+    private $plainPassword;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string hashed password
      */
     private $password;
 
@@ -94,13 +101,8 @@ class Member implements UserInterface
      */
     private $enabled;
 
-    public function __construct(string $firstname, string $lastname, string $email, string $password, ?string $birthdate = null)
+    public function __construct()
     {
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
-        $this->email;
-        $this->password = $password;
-        $this->birthdate = $birthdate;
         $this->roles = ['ROLE_USER'];
         $this->createdAt = new \Datetime();
         $this->enabled = false;
@@ -177,6 +179,26 @@ class Member implements UserInterface
         $this->roles = $roles;
 
         $this->setUpdatedAt();
+
+        return $this;
+    }
+
+    /**
+     * Get the value of plainPassword
+     */ 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Set the value of plainPassword
+     *
+     * @return  self
+     */ 
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
@@ -283,6 +305,6 @@ class Member implements UserInterface
      */
     public function eraseCredentials()
     {
-
+        $this->plainPassword = null;
     }
 }
