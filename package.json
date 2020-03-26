@@ -21,9 +21,9 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "dev-server": "encore dev-server",
+        "dev-server": "encore dev-server --hot",
         "dev": "encore dev",
-        "watch": "encore dev --watch",
+        "watch": "encore dev --watch --hot",
         "build": "encore production --progress"
     }
 }
