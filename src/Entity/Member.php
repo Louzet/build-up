@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use App\Validator\Constraints as Cons;
 
 /**
  * @ApiResource(
@@ -51,7 +52,8 @@ class Member implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
+     * @Assert\Email(message = "L'email '{{ value }}' n'est pas un email valide.")
      * @Groups({"member:output", "members:input"})
      */
     private $email;
@@ -66,6 +68,7 @@ class Member implements UserInterface
      * @SerializedName("password")
      * @Groups({"members:input"})
      * @Assert\NotBlank()
+     * @Cons\PasswordLevel(level="medium")
      */
     private $plainPassword;
 
@@ -77,9 +80,16 @@ class Member implements UserInterface
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Groups({"members:output", "members:input"})
+     * @Groups({"members:output"})
      */
     private $birthdate;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Groups({"members:output"})
+     * @Assert\Choice({"male", "female"})
+     */
+    private $sex;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -249,19 +259,39 @@ class Member implements UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    /**
+     * Get the value of sex
+     */ 
+    public function getSex(): ?string
+    {
+        return $this->sex;
+    }
+
+    /**
+     * Set the value of sex
+     *
+     * @return  self
+     */ 
+    public function setSex(string $sex): self
+    {
+        $this->sex = $sex;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DatetimeInterface $createdAt): self
+    public function setCreatedAt(\Datetime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
@@ -294,7 +324,7 @@ class Member implements UserInterface
      */
     public function getSalt()
     {
-
+        return null;
     }
 
     /**

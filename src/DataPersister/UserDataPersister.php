@@ -47,7 +47,7 @@ class UserDataPersister implements DataPersisterInterface
     /**
      * Removes the data.
      */
-    public function remove($data)
+    public function remove($data): void
     {
         $this->em->remove($data);
         $this->em->flush();

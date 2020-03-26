@@ -91,7 +91,7 @@ endif
 
 .PHONY: stan
 stan: vendor/autoload.php ## Analyse le code
-	docker run -v $(PWD):/app --rm phpstan/phpstan analyse
+	docker run -v $(PWD):/app --rm phpstan/phpstan analyse --level=5
 
 
 .PHONY: db
