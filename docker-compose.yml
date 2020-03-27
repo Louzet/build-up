@@ -4,7 +4,7 @@ services:
   nginx:
     image: nginx:1.16.1
     ports:
-      - 8000:80
+      - 8001:80
     working_dir: "/var/www"
     volumes:
       - .:/var/www:rw,delegated
@@ -51,7 +51,7 @@ services:
     image: phpmyadmin/phpmyadmin
     restart: on-failure
     ports:
-      - '8080:80'
+      - '8082:8082'
     environment:
       PMA_HOST: mysql
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}

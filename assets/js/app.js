@@ -11,15 +11,26 @@ require('bootstrap/dist/css/bootstrap.min.css');
 import $ from 'jquery';
 import Home from "./pages/Home";
 import Registration from "./pages/auth/RegistrationPage";
+import Login from "./pages/auth/LoginPage";
+import AuthApi from "./api/AuthApi";
 
 
 export default class App extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {}
+    }
+
     render() {
+        
         return (
             <div className="app">
                 <Router>
                     <div className="container-fluid pt-5">
                         <Switch>
+                            <Route exact path="/login" component={Login} />
                             <Route exact path="/registration" component={Registration} />
                             <Route exact path="/" component={Home} />
                         </Switch>

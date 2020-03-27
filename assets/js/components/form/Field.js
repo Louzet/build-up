@@ -4,7 +4,7 @@ const Field = ({ name, label, value, onChange, placeholder = "", required, id, t
 
     return (
         <div className="form-group">
-            <label htmlFor={name} className={labelClassName}>{label}</label>
+            <label htmlFor={name} className={labelClassName}>{label ? label : ""}</label>
             <input
                 type={type}
                 name={name}
