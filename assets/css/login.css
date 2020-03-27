@@ -1,0 +1,19 @@
+#login-section {}
+
+.text-login {
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (max-width: 768px) {
+    #info-section {
+        display: none;
+    }
+    #login-section {
+        display: flex;
+        justify-content: center;
+    }
+}
