@@ -1,0 +1,18 @@
+:root {
+    --color-background: #f0fbf8;
+    --color-theme1: #E999A6;
+    --color-theme2: #941C2F;
+    --theme: linear-gradient(to top, var(--color-theme1), #d57b87, #c15d69, #ab3f4c, var(--color-theme2));
+    --color2: #20A4F3;
+    --color3: #59F8E8;
+    --color-text-dark: #03191e;
+    --color-text-white: #ffffff;
+}
+
+body {
+    height: 100%;
+    background-color: var(--theme) !important;
+    background-size: cover;
+    color: var(--color-text-dark);
+    font-family: 'Nunito', sans-serif;
+}
