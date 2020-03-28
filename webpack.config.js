@@ -28,6 +28,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
+    .addStyleEntry('tailwind', './assets/css/tailwind.css')
 
     .copyFiles({
         from: './assets/img',
@@ -70,6 +71,12 @@ Encore
 
     // enables Sass/SCSS support
     //.enableSassLoader()
+    .enablePostCssLoader((options) => {
+        options.config = {
+            // directory where the postcss.config.js file is stored
+            path: './postcss.config.js'
+        };
+    })
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
