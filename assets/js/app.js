@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, HashRouter, Route, Switch, withRouter, matchPath } from 'react-router-dom';
 
@@ -14,32 +14,31 @@ import Registration from "./pages/auth/RegistrationPage";
 import Login from "./pages/auth/LoginPage";
 import AuthApi from "./api/AuthApi";
 
+import 'mdbreact/dist/css/mdb.css';
 
-export default class App extends Component {
+import Navbar from "./components/Navbar/Navbar";
+import NavbarMDB from "./components/NavbarMDB";
 
-    constructor(props) {
-        super(props)
-
-        this.state = {}
-    }
-
-    render() {
-        
-        return (
-            <div className="app">
-                <Router>
-                    <div className="container-fluid pt-5">
-                        <Switch>
-                            <Route exact path="/login" component={Login} />
-                            <Route exact path="/registration" component={Registration} />
-                            <Route exact path="/" component={Home} />
-                        </Switch>
-                    </div>
-                </Router> 
-            </div>
-        )
-    }
+const App = (props) => {
+    
+    
+    return (
+        <div className="app">
+            <Router>
+                <div className="container-full">
+                    <NavbarMDB />
+                    <Switch>
+                        <Route exact path="/login" component={Login} />
+                        <Route exact path="/registration" component={Registration} />
+                        <Route exact path="/" component={Home} />
+                    </Switch>
+                </div>
+            </Router> 
+        </div>
+    )
 }
+
+export default App;
 
 ReactDOM.render(
     <App />,
