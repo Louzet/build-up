@@ -1,5 +1,10 @@
 import React, { Component, useState } from 'react'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import { useSpring, animated, config } from 'react-spring'
+
+// stylesheets
+require('../../css/components/Navbar.css')
 
 const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false)
@@ -12,7 +17,6 @@ const Navbar = () => {
 		setIsOpen(false)
 	}
 
-	let burgerStatus = isOpen ? 'block' : 'hidden'
 	let navStatus = isOpen ? 'block' : 'hidden'
 
 	return (
@@ -49,31 +53,31 @@ const Navbar = () => {
 			</div>
 			<nav>
 				<ul className={'sm:flex sm:items-center sm:p-0 px-2 pt-2 pb-4 ' + navStatus}>
-					<li className="block">
+					<li className="block mb-2">
 						<a
 							href="#responsive-header"
-							className="block px-2 py-1 rounded text-gray-800 font-semibold hover:bg-gray-600 sm:mt-0"
+							className="block px-2 py-1 rounded text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
 						>
 							Docs
 						</a>
 					</li>
-					<li className="block">
+					<li className="block mb-2">
 						<a
 							href="#responsive-header"
-							className="block py-1 px-2 mt-1 rounded text-gray-800 font-semibold hover:bg-gray-600 sm:mt-0"
+							className="block py-1 px-2 mt-1 rounded text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
 						>
 							Examples
 						</a>
 					</li>
-					<li className="block">
+					<li className="block mb-2">
 						<a
 							href="#responsive-header"
-							className="block py-1 px-2 mt-1 rounded text-gray-800 font-semibold hover:bg-gray-600 sm:mt-0"
+							className="block py-1 px-2 mt-1 rounded text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
 						>
 							Blog
 						</a>
 					</li>
-					<li className="block">
+					<li className="block mb-2">
 						<Link
 							onClick={closeMenu}
 							to="/login"
