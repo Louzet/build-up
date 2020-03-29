@@ -19,3 +19,7 @@
 .text-shadow-none {
     text-shadow: none;
 }
+
+.border-b-1 {
+    border-bottom-width: 1px;
+}
