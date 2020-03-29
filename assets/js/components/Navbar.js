@@ -56,7 +56,7 @@ const Navbar = () => {
 					<li className="block mb-2">
 						<a
 							href="#responsive-header"
-							className="block px-2 py-1 rounded text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
+							className="block px-2 py-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
 						>
 							Docs
 						</a>
@@ -64,7 +64,7 @@ const Navbar = () => {
 					<li className="block mb-2">
 						<a
 							href="#responsive-header"
-							className="block py-1 px-2 mt-1 rounded text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
+							className="block py-1 px-2 mt-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
 						>
 							Examples
 						</a>
@@ -72,7 +72,7 @@ const Navbar = () => {
 					<li className="block mb-2">
 						<a
 							href="#responsive-header"
-							className="block py-1 px-2 mt-1 rounded text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
+							className="block py-1 px-2 mt-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
 						>
 							Blog
 						</a>
@@ -80,10 +80,19 @@ const Navbar = () => {
 					<li className="block mb-2">
 						<Link
 							onClick={closeMenu}
-							to="/login"
-							className="block py-1 px-2 mt-1 rounded text-gray-800 font-semibold hover:bg-gray-600 sm:mt-0"
+							to="/registration"
+							className="block py-1 px-2 mt-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
 						>
-							Login
+							Inscription
+						</Link>
+					</li>
+					<li className="block mb-2">
+						<Link
+							onClick={closeMenu}
+							to="/login"
+							className="block py-2 px-4 mt-1 border rounded text-gray-800 border-gray-800 font-semibold hover:bg-gray-600 hover:text-white sm:mt-0"
+						>
+							Connexion
 						</Link>
 					</li>
 				</ul>
