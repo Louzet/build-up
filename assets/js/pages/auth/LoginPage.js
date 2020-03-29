@@ -1,118 +1,97 @@
-import React, { Component, useState } from 'react';
-import Field from '../../components/form/Field';
+import React, { Component, useState } from 'react'
+import Field from '../../components/form/Field'
 
-import "../../../css/login.css";
+import AuthApi from '../../api/AuthApi'
+import MaterialField from '../../components/form/MaterialField'
 
-import AuthApi from '../../api/AuthApi';
-import MaterialField from '../../components/form/MaterialField';
+const LoginPage = (props) => {
+	const [user, setUser] = useState({
+		username: '',
+		password: '',
+		remember: false,
+	})
 
-const LoginPage = props => {
+	const [errors, setErrors] = useState({
+		username: '',
+		password: '',
+		remember: '',
+	})
 
-    const [user, setUser] = useState({
-        "username": "",
-        "password": "",
-        "remember": false
-    });
+	const handleSubmit = async (event) => {
+		event.preventDefault()
 
-    const [errors, setErrors] = useState({
-        "username": "",
-        "password": "",
-        "remember": ""
-    });
+		try {
+			await AuthApi.login(user)
+			setErrors('')
+			props.history.push('/')
+		} catch (error) {
+			const { violations } = error.response.data
 
-    const handleSubmit = async event => {
-        event.preventDefault();
+			if (violations) {
+				const apiErrors = {}
+				violations.forEach((violation) => {
+					apiErrors[violation.propertyPath] = violation.message
+				})
 
-        try {
-            await AuthApi.login(user);
-            setErrors("");
-            props.history.push("/");
-            
-        } catch(error) {
-            const { violations } = error.response.data;
+				setErrors(apiErrors)
+			}
+		}
+	}
 
-            if (violations) {
-                const apiErrors = {};
-                violations.forEach(violation => {
-                    apiErrors[violation.propertyPath] = violation.message;
-                });
+	const handleChange = (event) => {
+		const target = event.target
+		const name = target.name
+		const value = target.type === 'checkbox' ? target.checked : target.value
 
-                setErrors(apiErrors);
-            }
-        }
-    };
+		setUser({ ...user, [name]: value })
+	}
 
-    const handleChange = event => {
-        const target = event.target;
-        const name = target.name;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-
-        setUser({ ...user, [name]: value });
-    }
-
-    return (
-        <React.Fragment>
-            <div className="row">
-                <div id="info-section" className="col-sm-12 col-md-6">
-                    <div >
-                        <h1>info</h1>
-                    </div>
-                </div>
-                <div id="login-section" className="col-sm-12 col-md-6">
-                    <div className="">
-                        <h1 className="text-login">Login</h1>
-                        <div className="form-login-box">
-                            <div className="col-sm-10 offset-sm-1 col-md-8 offset-md-2 align-self-center">
-                                <form onSubmit={handleSubmit}>
-                                    <MaterialField 
-                                        type="text"
-                                        label="Email"
-                                        name="username"
-                                        value={user.username}
-                                        onChange={handleChange}
-                                        error={errors.username}
-                                        placeholder=""
-                                        required
-                                    />
-                                    <MaterialField 
-                                        type="password"
-                                        label="Mot de passe"
-                                        name="password"
-                                        value={user.password}
-                                        onChange={handleChange}
-                                        error={errors.password}
-                                        placeholder=""
-                                        required
-                                    />
-                                    <div className="form-check">
-                                        <input 
-                                            name="remember"
-                                            type="checkbox" 
-                                            className="form-check-input" 
-                                            id="remember" 
-                                            onChange={handleChange}
-                                            checked={user.remember}
-                                        />
-                                        <label className="form-check-label" htmlFor="remember">
-                                            Se souvenir de moi
-                                        </label>
-                                    </div>
-                                    <br/>
-                                    <div className="form-group">
-                                        <button className="btn btn-primary btn-block">Connexion</button>
-                                    </div>
-                                </form>
-                                <div id="forgotten-password">
-                                    <p>Vous avez perdu votre mot de passe ? <a href="#">Cliquez ici</a></p>
-                                </div>
-                                <a className="nav-link text-center" href="#">Créer un compte</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </React.Fragment>
-    )
+	return (
+		<div className="p-10">
+			<div className="flex flex-row justify-center items-center pt-16">
+				<form onSubmit={handleSubmit} className="rounded-lg">
+					<MaterialField
+						type="text"
+						label="Email"
+						name="username"
+						value={user.username}
+						onChange={handleChange}
+						error={errors.username}
+						placeholder=""
+						required
+					/>
+					<MaterialField
+						type="password"
+						name="password"
+						value={user.password}
+						onChange={handleChange}
+						error={errors.password}
+						placeholder="******************"
+						required
+					/>
+					<div>
+						<label className="inline-flex items-center" htmlFor="remember">
+							<input
+								type="checkbox"
+								name="remember"
+								className="form-checkbox"
+								id="remember"
+								onChange={handleChange}
+								checked={user.remember}
+							/>
+							<span className="ml-2">se souvenir de moi</span>
+						</label>
+					</div>
+					<br />
+					<div className="form-group">
+						<button className="block w-full py-2 px-4 mt-1 border rounded text-gray-800 border-gray-800 font-semibold hover:bg-gray-600 hover:text-white sm:mt-0">
+							Connexion
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	)
 }
 
-export default LoginPage;
+export default LoginPage

@@ -9,18 +9,8 @@
     --color-text-white: #ffffff;
 }
 
-*,
-*::after,
-*::before {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-}
-
 body {
-    height: 100%;
-    background-color: var(--theme) !important;
-    background-size: cover;
+    min-height: 100vh;
     color: var(--color-text-dark);
     font-family: 'Nunito', sans-serif;
     box-sizing: border-box;

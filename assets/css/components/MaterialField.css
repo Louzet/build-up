@@ -4,12 +4,11 @@
     margin-bottom:45px; 
 }
 .group input {
-    font-size:18px;
     padding:10px 10px 10px 5px;
     display:block;
     width:300px;
     border:none;
-    border-bottom:1px solid #757575;
+    border-bottom:1px solid rgb(129, 143, 197);
 }
 .group input:focus { 
     outline:none;
@@ -32,7 +31,6 @@
 /* active state */
 .group input:focus ~ label, input:valid ~ label {
     top:-20px;
-    font-size:14px;
     color:#5264AE;
 }
 
