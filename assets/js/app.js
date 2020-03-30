@@ -20,18 +20,16 @@ import Navbar from './components/Navbar'
 
 const App = (props) => {
 	return (
-		<div className="app">
-			<Router>
-				<Navbar />
-				<div className="container-full">
-					<Switch>
-						<Route exact path="/login" component={Login} />
-						<Route exact path="/registration" component={Registration} />
-						<Route exact path="/" component={Home} />
-					</Switch>
-				</div>
-			</Router>
-		</div>
+		<Router>
+			<Navbar />
+			<main>
+				<Switch>
+					<Route exact path="/login" component={Login} />
+					<Route exact path="/registration" component={Registration} />
+					<Route exact path="/" component={Home} />
+				</Switch>
+			</main>
+		</Router>
 	)
 }
 
