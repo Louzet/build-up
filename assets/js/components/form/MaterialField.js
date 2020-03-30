@@ -14,28 +14,25 @@ const MaterialField = ({
 	error = '',
 	labelClassName = '',
 }) => {
-	const isInvalid = error
-		? 'text-sm leading-tight focus:outline is-invalid'
-		: 'text-sm leading-tight focus:outline'
+	const isInvalid = error ? 'text-sm leading-tight is-invalid' : 'text-sm leading-tight'
 
 	return (
-		<div className="group">
+		<div className="md-input-box">
 			<input
-				type={type}
-				name={name}
-				value={value}
-				placeholder={placeholder}
 				id={id ? id : name}
-				onChange={onChange}
-				className={isInvalid}
+				name={name}
+				type={type}
+				label={label}
+				className={isInvalid + ' md-input'}
+				placeholder=" "
 				required={required}
-				aria-label={name}
+				onChange={onChange}
+				value={value}
 			/>
-			<span className="highlight" />
-			<span className="bar" />
-			<label htmlFor={name} className={labelClassName}>
-				{label ? label : ''}
+			<label htmlFor={id ? id : name} className="md-label">
+				{label}
 			</label>
+			<div className="md-input-underline" />
 			{error && <p className="invalid-feedback">{error}</p>}
 		</div>
 	)
