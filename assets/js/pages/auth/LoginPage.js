@@ -8,15 +8,13 @@ import MaterialCheckboxField from '../../components/form/MaterialCheckboxField'
 
 const LoginPage = (props) => {
 	const [user, setUser] = useState({
-		username: '',
+		email: '',
 		password: '',
-		remember: false,
 	})
 
 	const [errors, setErrors] = useState({
-		username: '',
+		email: '',
 		password: '',
-		remember: '',
 	})
 
 	const [failed, setFailed] = useState({
@@ -49,7 +47,7 @@ const LoginPage = (props) => {
 				let msg = {
 					...failed,
 					code: error.response.data.code,
-					message: 'Couple email / mot de passe invalide',
+					message: 'vos identifiants sont incorrects',
 				}
 				setFailed(msg)
 			}
@@ -89,14 +87,14 @@ const LoginPage = (props) => {
 				</div>
 			) : null}
 			<div className="flex flex-row justify-center items-center w-5/6 xs:w-5/6 sm:w-1/2 md:w-1/2 lg:w-4/12 mx-auto border border-indigo-800 rounded pt-10">
-				<form onSubmit={handleSubmit} className="w-full rounded-lg">
+				<form method="POST" onSubmit={handleSubmit} className="w-full rounded-lg">
 					<MaterialField
 						type="email"
 						label="Email"
-						name="username"
-						value={user.username}
+						name="email"
+						value={user.email}
 						onChange={handleChange}
-						error={errors.username}
+						error={errors.email}
 						placeholder="john@doe.fr"
 					/>
 					<MaterialField
@@ -113,13 +111,14 @@ const LoginPage = (props) => {
 							name="remember"
 							label="Se souvenir de moi"
 							id="remember"
-							checked={user.remember}
+							checked="true"
 							onChange={handleChange}
 						/>
 					</div>
 					<br />
 					<div className="form-group">
-						<button className="block w-full py-2 cursor-pointer px-4 mt-1 border rounded text-gray-200 bg-indigo-800 hover:text-white hover:bg-indigo-900 border-gray-500 font-semibold sm:mt-0"
+						<button
+							className="block w-full py-2 cursor-pointer px-4 mt-1 border rounded text-gray-200 bg-indigo-800 hover:text-white hover:bg-indigo-900 border-gray-500 font-semibold sm:mt-0"
 							type="submit"
 						>
 							Connexion

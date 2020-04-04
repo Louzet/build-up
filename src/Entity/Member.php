@@ -52,7 +52,7 @@ class Member implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(allowNull=false)
      * @Assert\Email(message = "L'email '{{ value }}' n'est pas un email valide.")
      * @Groups({"member:output", "members:input"})
      */

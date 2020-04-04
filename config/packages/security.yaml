@@ -30,8 +30,13 @@ security:
             anonymous: true
             json_login:
                 check_path: /api/login_check
+                username_path: email
+                password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
         api:
             pattern: ^/api
@@ -42,9 +47,7 @@ security:
                     - lexik_jwt_authentication.jwt_token_authenticator
 
         main:
-            anonymous: lazy
-            provider: app_user_provider
-            pattern: ^/
+            anonymous: true
 
 
             # activate different ways to authenticate
@@ -57,6 +60,4 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/members, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST] }
         - { path: ^/api/members, roles: IS_AUTHENTICATED_FULLY, methods: [GET, PUT, PATCH, DELETE] }
-        - { path: ^/api/, roles: IS_AUTHENTICATED_FULLY }
