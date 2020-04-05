@@ -9,6 +9,9 @@ import {
 	matchPath,
 } from 'react-router-dom'
 
+import { Provider } from 'react-redux'
+import store from './store'
+
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/app.css'
 
@@ -20,16 +23,18 @@ import Navbar from './components/Navbar'
 
 const App = (props) => {
 	return (
-		<Router>
-			<Navbar />
-			<main>
-				<Switch>
-					<Route exact path="/login" component={Login} />
-					<Route exact path="/registration" component={Registration} />
-					<Route exact path="/" component={Home} />
-				</Switch>
-			</main>
-		</Router>
+		<Provider store={store}>
+			<Router>
+				<Navbar />
+				<main>
+					<Switch>
+						<Route exact path="/login" component={Login} />
+						<Route exact path="/registration" component={Registration} />
+						<Route exact path="/" component={Home} />
+					</Switch>
+				</main>
+			</Router>
+		</Provider>
 	)
 }
 
