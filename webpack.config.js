@@ -76,6 +76,10 @@ Encore.enableReactPreset()
 		}
 	})
 
+	.configureBabel(function (babelConfig) {
+		babelConfig.plugins.push('@babel/plugin-proposal-class-properties')
+	})
+
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()
 
