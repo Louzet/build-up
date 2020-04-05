@@ -1,4 +1,8 @@
 import React, { Component, useState } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+
+import { login } from './../../actions/users'
 
 import '../../../css/login.css'
 
@@ -10,6 +14,7 @@ const LoginPage = (props) => {
 	const [user, setUser] = useState({
 		email: '',
 		password: '',
+		remember: false,
 	})
 
 	const [errors, setErrors] = useState({
@@ -24,42 +29,53 @@ const LoginPage = (props) => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
+		login(user)
 
-		try {
-			await AuthApi.login(user)
+		// try {
+		// 	await AuthApi.login(user)
 
-			setErrors('')
-			setFailed({})
+		// 	setErrors('')
+		// 	setFailed({})
 
-			props.history.push('/')
-		} catch (error) {
-			const { violations } = error.response.data
+		// 	props.history.push('/')
+		// } catch (error) {
+		// 	const { violations } = error.response.data
 
-			if (violations) {
-				const apiErrors = {}
-				violations.forEach((violation) => {
-					apiErrors[violation.propertyPath] = violation.message
-				})
+		// 	if (violations) {
+		// 		const apiErrors = {}
+		// 		violations.forEach((violation) => {
+		// 			apiErrors[violation.propertyPath] = violation.message
+		// 		})
 
-				setErrors(apiErrors)
-			}
-			if (error.response.data.code == 401) {
-				let msg = {
-					...failed,
-					code: error.response.data.code,
-					message: 'vos identifiants sont incorrects',
-				}
-				setFailed(msg)
-			}
-		}
+		// 		setErrors(apiErrors)
+		// 	}
+		// 	if (error.response.data.code == 401) {
+		// 		let msg = {
+		// 			...failed,
+		// 			code: error.response.data.code,
+		// 			message: 'vos identifiants sont incorrects',
+		// 		}
+		// 		setFailed(msg)
+		// 	}
+		// }
 	}
 
 	const handleChange = (event) => {
 		const target = event.target
+		const value = target.name === 'remember' ? target.checked : target.value
 		const name = target.name
-		const value = target.type === 'checkbox' ? target.checked : target.value
-
 		setUser({ ...user, [name]: value })
+
+		// const target = event.target
+		// const name = target.name
+		// if (target.type === 'checkbox' && target.checked) {
+		// 	value = 1
+		// } else {
+		// 	value = 0
+		// }
+		// const value = target.value
+
+		// setUser({ ...user, [name]: value })
 	}
 
 	return (
@@ -111,7 +127,7 @@ const LoginPage = (props) => {
 							name="remember"
 							label="Se souvenir de moi"
 							id="remember"
-							checked="true"
+							checked={user.remember}
 							onChange={handleChange}
 						/>
 					</div>
@@ -130,4 +146,8 @@ const LoginPage = (props) => {
 	)
 }
 
-export default LoginPage
+const mapStateToProps = (state) => ({
+	users: state.userReducer.users,
+})
+
+export default connect(mapStateToProps, { login })(LoginPage)

@@ -20,6 +20,7 @@ import Home from './pages/Home'
 import Registration from './pages/auth/RegistrationPage'
 import Login from './pages/auth/LoginPage'
 import Navbar from './components/Navbar'
+import PrivateRoute from './components/PrivateRoute'
 
 const App = (props) => {
 	return (
@@ -28,9 +29,9 @@ const App = (props) => {
 				<Navbar />
 				<main>
 					<Switch>
+						<PrivateRoute exact path="/" component={Home} />
 						<Route exact path="/login" component={Login} />
 						<Route exact path="/registration" component={Registration} />
-						<Route exact path="/" component={Home} />
 					</Switch>
 				</main>
 			</Router>
