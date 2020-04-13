@@ -1,15 +1,15 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import { getUsers } from './../actions/users'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getUsers } from './../actions/users';
 
 class Home extends Component {
 	static propTypes = {
-		users: PropTypes.array.isRequired,
-	}
+		users: PropTypes.array.isRequired
+	};
 
 	componentDidMount() {
-		this.props.getUsers()
+		this.props.getUsers();
 	}
 
 	render() {
@@ -17,12 +17,12 @@ class Home extends Component {
 			<div>
 				<h2>Home</h2>
 			</div>
-		)
+		);
 	}
 }
 
 const mapStateToProps = (state) => ({
-	users: state.userReducer.users,
-})
+	users: state.userReducer.users
+});
 
-export default connect(mapStateToProps, { getUsers })(Home)
+export default connect(mapStateToProps, { getUsers })(Home);

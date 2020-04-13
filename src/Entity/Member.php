@@ -16,11 +16,24 @@ use App\Validator\Constraints as Cons;
 
 /**
  * @ApiResource(
- *  normalizationContext={"groups"={"members:output"}},
- *  denormalizationContext={"groups"={"members:input"}},
- *  attributes={
- *      "order"={"lastname":"asc"}
- *  }
+ *      itemOperations={
+ *          "get"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')",
+ *              "normalization_context"={
+ *                  "groups"={"members:output"}
+ *              }
+ *          }
+ *      },
+ *      collectionOperations={
+ *          "post"={
+ *              "normalization_context"={
+ *                  "groups"={"members:output"}
+ *              },
+ *              "denormalization_context"={
+ *                  "groups"={"members:input"}
+ *              }
+ *          }
+ *      }
  * )
  * @ApiFilter(SearchFilter::class, properties={"firstname":"partial", "lastname":"partial", "email":"partial"})
  * @ORM\Entity(repositoryClass="App\Repository\MemberRepository")
@@ -195,7 +208,7 @@ class Member implements UserInterface
 
     /**
      * Get the value of plainPassword
-     */ 
+     */
     public function getPlainPassword()
     {
         return $this->plainPassword;
@@ -205,7 +218,7 @@ class Member implements UserInterface
      * Set the value of plainPassword
      *
      * @return  self
-     */ 
+     */
     public function setPlainPassword($plainPassword)
     {
         $this->plainPassword = $plainPassword;
@@ -261,7 +274,7 @@ class Member implements UserInterface
 
     /**
      * Get the value of sex
-     */ 
+     */
     public function getSex(): ?string
     {
         return $this->sex;
@@ -271,7 +284,7 @@ class Member implements UserInterface
      * Set the value of sex
      *
      * @return  self
-     */ 
+     */
     public function setSex(string $sex): self
     {
         $this->sex = $sex;
