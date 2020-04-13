@@ -1,81 +1,52 @@
-import React, { Component, useState } from 'react'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { login } from './../../actions/users'
+import '../../../css/login.css';
 
-import '../../../css/login.css'
+import MaterialField from '../../components/form/MaterialField';
+import MaterialCheckboxField from '../../components/form/MaterialCheckboxField';
+import login from '../../actions/login';
+import authReducer from '../../reducers/authReducer';
 
-import AuthApi from '../../api/AuthApi'
-import MaterialField from '../../components/form/MaterialField'
-import MaterialCheckboxField from '../../components/form/MaterialCheckboxField'
-
+// TODO: transformer en class component
 const LoginPage = (props) => {
-	const [user, setUser] = useState({
+	const [ prevProps, setPrevProps ] = useState({
+		token: null
+	});
+
+	const [ user, setUser ] = useState({
 		email: '',
 		password: '',
-		remember: false,
-	})
+		remember: false
+	});
 
-	const [errors, setErrors] = useState({
+	const [ errors, setErrors ] = useState({
 		email: '',
-		password: '',
-	})
+		password: ''
+	});
 
-	const [failed, setFailed] = useState({
+	const [ failed, setFailed ] = useState({
 		code: '',
-		message: '',
-	})
+		message: ''
+	});
 
 	const handleSubmit = async (event) => {
-		event.preventDefault()
-		login(user)
-
-		// try {
-		// 	await AuthApi.login(user)
-
-		// 	setErrors('')
-		// 	setFailed({})
-
-		// 	props.history.push('/')
-		// } catch (error) {
-		// 	const { violations } = error.response.data
-
-		// 	if (violations) {
-		// 		const apiErrors = {}
-		// 		violations.forEach((violation) => {
-		// 			apiErrors[violation.propertyPath] = violation.message
-		// 		})
-
-		// 		setErrors(apiErrors)
-		// 	}
-		// 	if (error.response.data.code == 401) {
-		// 		let msg = {
-		// 			...failed,
-		// 			code: error.response.data.code,
-		// 			message: 'vos identifiants sont incorrects',
-		// 		}
-		// 		setFailed(msg)
-		// 	}
-		// }
-	}
+		props.handleLogin(user.email, user.password);
+		event.preventDefault();
+	};
 
 	const handleChange = (event) => {
-		const target = event.target
-		const value = target.name === 'remember' ? target.checked : target.value
-		const name = target.name
-		setUser({ ...user, [name]: value })
+		const target = event.target;
+		const value = target.name === 'remember' ? target.checked : target.value.trim();
+		const name = target.name;
+		setUser({ ...user, [name]: value });
+	};
 
-		// const target = event.target
-		// const name = target.name
-		// if (target.type === 'checkbox' && target.checked) {
-		// 	value = 1
-		// } else {
-		// 	value = 0
-		// }
-		// const value = target.value
-
-		// setUser({ ...user, [name]: value })
+	let history = useHistory();
+	if (props.isAuthenticated) {
+		history.push('/');
 	}
 
 	return (
@@ -143,11 +114,25 @@ const LoginPage = (props) => {
 				</form>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-const mapStateToProps = (state) => ({
-	users: state.userReducer.users,
-})
+LoginPage.propTypes = {
+	handleLogin: PropTypes.func.isRequired,
+	isAuthenticated: PropTypes.bool.isRequired
+};
 
-export default connect(mapStateToProps, { login })(LoginPage)
+const mapStateToProps = ({ authReducer }) => {
+	const { isAuthenticated } = authReducer;
+	return {
+		isAuthenticated
+	};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+	handleLogin(email, password) {
+		dispatch(login(email, password));
+	}
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -1,23 +1,25 @@
-import React, { Component, useState } from 'react'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-import { useSpring, animated, config } from 'react-spring'
+import React, { Component, useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import logOutUser, { logout } from './../actions/auth';
 
 // stylesheets
-require('../../css/components/Navbar.css')
+require('../../css/components/Navbar.css');
 
-const Navbar = () => {
-	const [isOpen, setIsOpen] = useState(false)
+const Navbar = ({ isAuthenticated }) => {
+	const [ isOpen, setIsOpen ] = useState(false);
 
 	const handleMenu = () => {
-		setIsOpen(!isOpen)
-	}
+		setIsOpen(!isOpen);
+	};
 
 	const closeMenu = () => {
-		setIsOpen(false)
-	}
+		setIsOpen(false);
+	};
 
-	let navStatus = isOpen ? 'block' : 'hidden'
+	let navStatus = isOpen ? 'block' : 'hidden';
 
 	return (
 		<header className="bg-white border-b-1 border-gray-400 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
@@ -77,28 +79,47 @@ const Navbar = () => {
 							Blog
 						</a>
 					</li>
-					<li className="block mb-2">
-						<Link
-							onClick={closeMenu}
-							to="/registration"
-							className="block py-1 px-2 mt-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
+					{!isAuthenticated ? (
+						<React.Fragment>
+							<li className="block mb-2">
+								<Link
+									onClick={closeMenu}
+									to="/registration"
+									className="block py-1 px-2 mt-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
+								>
+									Inscription
+								</Link>
+							</li>
+							<li className="block mb-2">
+								<Link
+									onClick={closeMenu}
+									to="/login"
+									className="block py-2 px-4 mt-1 border rounded text-gray-800 border-gray-800 font-semibold hover:bg-gray-600 hover:text-white sm:mt-0"
+								>
+									Connexion
+								</Link>
+							</li>
+						</React.Fragment>
+					) : (
+						<button
+							onClick={logOutUser}
+							className="block mb-2 py-2 px-4 mt-1 border rounded text-gray-800 border-gray-800 font-semibold hover:bg-gray-600 hover:text-white sm:mt-0"
 						>
-							Inscription
-						</Link>
-					</li>
-					<li className="block mb-2">
-						<Link
-							onClick={closeMenu}
-							to="/login"
-							className="block py-2 px-4 mt-1 border rounded text-gray-800 border-gray-800 font-semibold hover:bg-gray-600 hover:text-white sm:mt-0"
-						>
-							Connexion
-						</Link>
-					</li>
+							Deconnexion
+						</button>
+					)}
 				</ul>
 			</nav>
 		</header>
-	)
-}
+	);
+};
 
-export default Navbar
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.authReducer.isAuthenticated
+});
+
+Navbar.propTypes = {
+	isAuthenticated: PropTypes.bool.isRequired
+};
+
+export default connect(mapStateToProps)(Navbar);
