@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import logOutUser, { logout } from './../actions/auth';
+import { AuthMenu } from './menu/AuthMenu';
+import { GuestMenu } from './menu/GuestMenu';
 
 // stylesheets
 require('../../css/components/Navbar.css');
 
-const Navbar = ({ isAuthenticated }) => {
+const Navbar = ({ auth, logoutEvent }) => {
 	const [ isOpen, setIsOpen ] = useState(false);
 
 	const handleMenu = () => {
@@ -20,6 +22,10 @@ const Navbar = ({ isAuthenticated }) => {
 	};
 
 	let navStatus = isOpen ? 'block' : 'hidden';
+
+	const handleLogout = () => {
+		logoutEvent();
+	};
 
 	return (
 		<header className="bg-white border-b-1 border-gray-400 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
@@ -53,73 +59,27 @@ const Navbar = ({ isAuthenticated }) => {
 					</button>
 				</div>
 			</div>
-			<nav>
-				<ul className={'sm:flex sm:items-center sm:p-0 px-2 pt-2 pb-4 ' + navStatus}>
-					<li className="block mb-2">
-						<a
-							href="#responsive-header"
-							className="block px-2 py-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
-						>
-							Docs
-						</a>
-					</li>
-					<li className="block mb-2">
-						<a
-							href="#responsive-header"
-							className="block py-1 px-2 mt-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
-						>
-							Examples
-						</a>
-					</li>
-					<li className="block mb-2">
-						<a
-							href="#responsive-header"
-							className="block py-1 px-2 mt-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
-						>
-							Blog
-						</a>
-					</li>
-					{!isAuthenticated ? (
-						<React.Fragment>
-							<li className="block mb-2">
-								<Link
-									onClick={closeMenu}
-									to="/registration"
-									className="block py-1 px-2 mt-1 rounded leading-none text-sm text-gray-800 font-semibold no-underline hovering-a hover:text-red-700 sm:mt-0"
-								>
-									Inscription
-								</Link>
-							</li>
-							<li className="block mb-2">
-								<Link
-									onClick={closeMenu}
-									to="/login"
-									className="block py-2 px-4 mt-1 border rounded text-gray-800 border-gray-800 font-semibold hover:bg-gray-600 hover:text-white sm:mt-0"
-								>
-									Connexion
-								</Link>
-							</li>
-						</React.Fragment>
-					) : (
-						<button
-							onClick={logOutUser}
-							className="block mb-2 py-2 px-4 mt-1 border rounded text-gray-800 border-gray-800 font-semibold hover:bg-gray-600 hover:text-white sm:mt-0"
-						>
-							Deconnexion
-						</button>
-					)}
-				</ul>
-			</nav>
+			{auth.isAuthenticated ? (
+				<AuthMenu handleLogout={handleLogout} navStatus={navStatus} closeMenu={closeMenu} />
+			) : (
+				<GuestMenu navStatus={navStatus} closeMenu={closeMenu} />
+			)}
 		</header>
 	);
 };
 
-const mapStateToProps = (state) => ({
-	isAuthenticated: state.authReducer.isAuthenticated
-});
-
 Navbar.propTypes = {
-	isAuthenticated: PropTypes.bool.isRequired
+	logoutEvent: PropTypes.func
 };
 
-export default connect(mapStateToProps)(Navbar);
+const mapStateToProps = (state) => ({
+	auth: state.authReducer
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	logoutEvent() {
+		return dispatch(logOutUser());
+	}
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
