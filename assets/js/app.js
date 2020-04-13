@@ -15,19 +15,22 @@ import PrivateRoute from './components/PrivateRoute';
 
 import store from './store';
 import { Provider } from 'react-redux';
-import logOutUser from './actions/auth';
-import { setup } from './actions/setup';
+import logOutUser, { setLoggedInUser } from './actions/auth';
+import { isLoggedIn } from './utils/userUtils';
+import AppRoutes from './AppRoutes';
 
 const mapStateToProps = (state) => ({
-	authReducer: state.authReducer,
-	setupReducer: state.setupReducer
+	authReducer: state.authReducer
 });
 
 const mapDispatchToProps = {
-	logOutUser,
-	setup
+	logOutUser
 };
-setup();
+
+if (!isLoggedIn()) {
+	store.dispatch(logOutUser());
+}
+
 const App = (props) => {
 	const { isAuthenticated, logOutUser } = props;
 
@@ -37,9 +40,7 @@ const App = (props) => {
 				<Navbar auth={isAuthenticated} logout={logOutUser} />
 				<main>
 					<Switch>
-						<PrivateRoute exact path="/" component={Home} />
-						<Route exact path="/login" component={Login} />
-						<Route exact path="/registration" component={Registration} />
+						<AppRoutes />
 					</Switch>
 				</main>
 			</Router>

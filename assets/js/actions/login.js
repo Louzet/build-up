@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { API_URL } from './../config';
 import { LOGIN_LOADING, LOGIN_ERROR, LOGIN_SUCCESS } from './types';
 
 const loginLoading = (payload) => ({
@@ -19,10 +20,11 @@ const loginSuccess = (payload) => ({
 const login = (email, password) => (dispatch) => {
 	dispatch(loginLoading(true));
 	return axios
-		.post('/api/login_check', { email, password })
+		.post(`${API_URL}/login_check`, { email, password })
 		.then((response) => {
 			localStorage.setItem('token', response.data.token);
-			localStorage.setItem('user', JSON.stringify(response.data.user));
+			// set axios default header with token
+			axios.defaults.headers['Authorization'] = 'Bearer ' + response.data.token;
 			dispatch(loginLoading(false));
 			dispatch(loginSuccess(response.data));
 		})
