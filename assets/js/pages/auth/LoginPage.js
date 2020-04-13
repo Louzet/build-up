@@ -124,7 +124,6 @@ LoginPage.propTypes = {
 
 const mapStateToProps = ({ authReducer }) => {
 	const { isAuthenticated } = authReducer;
-	console.log(authReducer);
 	return {
 		isAuthenticated
 	};

@@ -2,6 +2,7 @@ import { AUTH_LOG_OUT_USER, AUTH_SET_CURRENT_USER } from './../actions/types';
 import { LOGIN_SUCCESS } from './../actions/types';
 
 import loginReducer from './loginReducer';
+import { userData, isLoggedIn } from '../utils/userUtils';
 
 const initialState = {
 	isAuthenticated: false,
@@ -13,7 +14,7 @@ const authReducer = (state = initialState, action) => {
 		case AUTH_SET_CURRENT_USER:
 			return {
 				...state,
-				isAuthenticated: !Object.keys(action.payload).length > 0 && action.payload.constructor === Object,
+				isAuthenticated: true,
 				user: action.payload
 			};
 		case AUTH_LOG_OUT_USER:
@@ -23,10 +24,15 @@ const authReducer = (state = initialState, action) => {
 				user: {}
 			};
 		case LOGIN_SUCCESS:
+			let user = {};
+			if (isLoggedIn()) {
+				user = userData();
+			}
+
 			return {
 				...state,
 				isAuthenticated: true,
-				user: action.payload.user
+				user: user
 			};
 		default:
 			return {

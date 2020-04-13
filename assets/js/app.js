@@ -16,7 +16,7 @@ import PrivateRoute from './components/PrivateRoute';
 import store from './store';
 import { Provider } from 'react-redux';
 import logOutUser, { setLoggedInUser } from './actions/auth';
-import { isLoggedIn } from './utils/userUtils';
+import { isLoggedIn, userData } from './utils/userUtils';
 import AppRoutes from './AppRoutes';
 
 const mapStateToProps = (state) => ({
@@ -29,6 +29,9 @@ const mapDispatchToProps = {
 
 if (!isLoggedIn()) {
 	store.dispatch(logOutUser());
+} else {
+	const user = userData();
+	store.dispatch(setLoggedInUser(user));
 }
 
 const App = (props) => {

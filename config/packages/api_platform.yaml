@@ -8,6 +8,10 @@ api_platform:
 
     swagger:
         versions: [3]
+        api_keys:
+            apiKey:
+                name: Authorization
+                type: header
 
     eager_loading:
         enabled: true

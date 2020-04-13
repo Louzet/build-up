@@ -25,11 +25,11 @@ const login = (email, password) => (dispatch) => {
 			localStorage.setItem('token', response.data.token);
 			// set axios default header with token
 			axios.defaults.headers['Authorization'] = 'Bearer ' + response.data.token;
-			dispatch(loginLoading(false));
 			dispatch(loginSuccess(response.data));
 		})
 		.catch((error) => {
 			dispatch(loginLoading(false));
+			console.log(error);
 			if (error.response) {
 				return dispatch(loginError(error.response.data));
 			}

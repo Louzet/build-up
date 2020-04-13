@@ -1,4 +1,4 @@
-import { AUTH_LOG_OUT_USER, AUTH_SET_CURRENT_USER } from './types';
+import { AUTH_LOG_OUT_USER, AUTH_SET_CURRENT_USER, GET_USER } from './types';
 import axios from 'axios';
 
 const logout = () => ({
