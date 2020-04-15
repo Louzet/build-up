@@ -1,32 +1,30 @@
-import React, { Component, useState } from 'react'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import { createUser } from './../../actions/users'
+import React, { Component, useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { createUser } from './../../actions/users';
 
-import Field from '../../components/form/Field'
+import Field from '../../components/form/Field';
 
-import '../../../css/registration.css'
-
-import AuthApi from '../../api/AuthApi'
+import '../../../css/registration.css';
 
 const RegistrationPage = ({ createUser }) => {
-	const [user, setUser] = useState({
+	const [ user, setUser ] = useState({
 		firstname: '',
 		lastname: '',
 		email: '',
-		password: '',
-	})
+		password: ''
+	});
 
-	const [errors, setErrors] = useState({
+	const [ errors, setErrors ] = useState({
 		firstname: '',
 		lastname: '',
 		email: '',
-		password: '',
-	})
+		password: ''
+	});
 
 	const handleSubmit = async (event) => {
-		event.preventDefault()
-		createUser(user)
+		event.preventDefault();
+		createUser(user);
 
 		// try {
 		//     const response = await AuthApi.register(user);
@@ -45,12 +43,12 @@ const RegistrationPage = ({ createUser }) => {
 
 		//     console.log(errors);
 		// }
-	}
+	};
 
 	const handleChange = ({ currentTarget }) => {
-		const { name, value } = currentTarget
-		setUser({ ...user, [name]: value })
-	}
+		const { name, value } = currentTarget;
+		setUser({ ...user, [name]: value });
+	};
 
 	return (
 		<div>
@@ -112,11 +110,11 @@ const RegistrationPage = ({ createUser }) => {
 				</div>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
 RegistrationPage.propTypes = {
-	createUser: PropTypes.func,
-}
+	createUser: PropTypes.func
+};
 
-export default connect(null, { createUser })(RegistrationPage)
+export default connect(null, { createUser })(RegistrationPage);
