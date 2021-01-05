@@ -22,7 +22,7 @@
         "@babel/preset-react": "^7.9.4",
         "@symfony/webpack-encore": "^0.28.2",
         "autoprefixer": "^9.7.5",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "bootstrap": "^4.4.1",
         "core-js": "^3.0.0",
         "eslint-config-prettier": "^6.10.1",
